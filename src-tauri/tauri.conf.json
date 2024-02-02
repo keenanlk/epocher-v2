@@ -6,8 +6,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "epocher-v2",
-    "version": "0.0.0"
+    "productName": "Epocher",
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -31,6 +31,9 @@
     },
     "security": {
       "csp": null
+    },
+    "updater": {
+      "active": false
     },
     "macOSPrivateApi": true,
     "windows": [
