@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatInTimeZone } from "date-fns-tz";
 import { Button, Datepicker, TextInput, Tooltip } from "flowbite-react";
 import { MdRefresh } from "react-icons/md";
 
 function App() {
-  localStorage.setItem("flowbite-theme-mode", "dark");
   const [date, setDate] = useState<Date>(new Date());
+  const [datepickerKey, setDatepickerKey] = useState<number>(0);
   const [tooltipText, setTooltipText] = useState("Click to copy");
+
+  useEffect(() => {
+    setDatepickerKey((prev) => prev + 1);
+  }, [date]);
 
   function getUnixTimeFromDate() {
     return Math.floor(date.getTime() / 1000);
@@ -64,7 +68,7 @@ function App() {
   }
 
   return (
-    <div className="w-screen h-screen bg-black bg-opacity-40">
+    <div className="w-screen h-screen bg-black bg-opacity-50">
       <div className="grid gap-4 grid-cols-1 p-8">
         <div className="flex justify-between space-x-2">
           <TextInput
@@ -95,15 +99,23 @@ function App() {
         </div>
         <div>
           <Datepicker
+            key={datepickerKey}
+            id="datepicker"
             className="w-full"
             showClearButton={false}
             showTodayButton={false}
             onSelectedDateChanged={calendarDayChange}
+            defaultDate={date}
             inline
           />
         </div>
         <div>
-          <TextInput sizing="md" type="time" onChange={onTimeChange} />
+          <TextInput
+            sizing="md"
+            type="time"
+            onChange={onTimeChange}
+            value={`${date.getHours()}:${date.getMinutes()}`}
+          />
         </div>
       </div>
     </div>
