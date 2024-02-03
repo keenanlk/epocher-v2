@@ -63,7 +63,7 @@ function App() {
   }
 
   return (
-    <div className="w-screen h-screen bg-black bg-opacity-40">
+    <div className="w-screen h-screen bg-black bg-opacity-50">
       <div className="grid gap-4 grid-cols-1 p-8">
         <div className="flex justify-between space-x-2">
           <TextInput
