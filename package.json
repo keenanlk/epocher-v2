@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "tauri:dev": "tauri dev",
     "tauri": "tauri",
-    "build:mac": "tauri build"
+    "build:mac": "tauri build",
+    "bump-patch": " tsx bump-version.ts patch",
+    "bump-minor": " tsx bump-version.ts minor",
+    "bump-major": " tsx bump-version.ts major"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.2",
@@ -30,7 +33,9 @@
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.33",
     "prettier": "^3.2.4",
+    "semver": "^7.5.4",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.0.2",
     "vite": "^5.0.0"
   },
