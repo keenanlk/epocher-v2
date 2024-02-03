@@ -4,7 +4,6 @@ import { Button, Datepicker, TextInput, Tooltip } from "flowbite-react";
 import { MdRefresh } from "react-icons/md";
 
 function App() {
-  localStorage.setItem("flowbite-theme-mode", "dark");
   const [date, setDate] = useState<Date>(new Date());
   const [tooltipText, setTooltipText] = useState("Click to copy");
 
@@ -103,7 +102,12 @@ function App() {
           />
         </div>
         <div>
-          <TextInput sizing="md" type="time" onChange={onTimeChange} />
+          <TextInput
+            sizing="md"
+            type="time"
+            onChange={onTimeChange}
+            value={`${date.getHours()}:${date.getMinutes()}`}
+          />
         </div>
       </div>
     </div>

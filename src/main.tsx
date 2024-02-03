@@ -7,7 +7,7 @@ import { Flowbite } from "flowbite-react";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Flowbite>
+    <Flowbite theme={{ mode: "auto" }}>
       <App />
     </Flowbite>
   </React.StrictMode>,
