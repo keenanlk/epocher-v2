@@ -26,11 +26,13 @@ function App() {
   }
 
   function onTimeChange(event: React.ChangeEvent<HTMLInputElement>) {
+    debugger;
     const time = event.target.value;
-    const [hours, minutes] = time.split(":");
+    const [hours, minutes, seconds] = time.split(":");
     const newDate = new Date(date);
     newDate.setHours(parseInt(hours));
     newDate.setMinutes(parseInt(minutes));
+    newDate.setSeconds(parseInt(seconds));
     setDate(newDate);
   }
 
@@ -65,6 +67,10 @@ function App() {
     calendarDate.setMinutes(date.getMinutes());
     calendarDate.setSeconds(date.getSeconds());
     setDate(calendarDate);
+  }
+
+  function formatTimeUnit(unit: number): string {
+    return unit < 10 ? `0${unit}` : `${unit}`;
   }
 
   return (
@@ -113,8 +119,9 @@ function App() {
           <TextInput
             sizing="md"
             type="time"
+            step="1"
             onChange={onTimeChange}
-            value={`${date.getHours()}:${date.getMinutes()}`}
+            value={`${formatTimeUnit(date.getHours())}:${formatTimeUnit(date.getMinutes())}:${formatTimeUnit(date.getSeconds())}`}
           />
         </div>
       </div>
