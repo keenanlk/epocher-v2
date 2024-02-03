@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { formatInTimeZone } from "date-fns-tz";
 import { Calendar } from "primereact/calendar";
+import {
+  InputNumber,
+  InputNumberValueChangeEvent,
+} from "primereact/inputnumber";
 
 function App() {
   const [date, setDate] = useState<Date>(new Date());
@@ -11,9 +15,8 @@ function App() {
     return Math.floor(date.getTime() / 1000);
   }
 
-  function onUnixTimeChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value;
-    const unixTime = parseInt(value);
+  function onUnixTimeChange(event: InputNumberValueChangeEvent) {
+    const unixTime = Number(event.value);
     if (isNaN(unixTime)) {
       return;
     }
@@ -47,11 +50,11 @@ function App() {
     <div className="w-screen h-screen bg-black bg-opacity-40">
       <div className="grid gap-4 grid-cols-1 p-8">
         <div>
-          <input
-            type="number"
+          <InputNumber
             value={getUnixTimeFromDate()}
-            onChange={onUnixTimeChange}
+            onValueChange={onUnixTimeChange}
             className=" unix-input"
+            useGrouping={false}
           />
         </div>
         <div>
@@ -69,6 +72,7 @@ function App() {
             value={date}
             onChange={(e) => e.value && setDate(e.value)}
             inline
+            hourFormat="12"
             showTime={true}
           />{" "}
         </div>

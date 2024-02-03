@@ -35,7 +35,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://gist.githubusercontent.com/keenanlk/5a3aae30eb5adb441747209aaee44b85/raw/d13c80589ca9e4792e75b00c653e9cbc991c1ec9/updater.json"
+        "https://raw.githubusercontent.com/keenanlk/epocher-v2/main/updater.json"
       ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDVGRjE5QkY4QzZFRDEzQzMKUldUREUrM0crSnZ4WDVvREhtTTVyQVFkMHY2Qi84eUNsM29oSHIrbFdVWDg0eUF0ZHlHQmpzT0cK"
@@ -47,7 +47,7 @@
         "resizable": false,
         "title": "Epocher",
         "width": 400,
-        "height": 600,
+        "height": 700,
         "visible": false,
         "hiddenTitle": true,
         "decorations": false,
