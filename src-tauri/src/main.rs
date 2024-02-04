@@ -1,13 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-
-use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
+use webbrowser;
+use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem};
 use tauri_plugin_positioner::{Position, WindowExt};
 
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
-    let system_tray_menu = SystemTrayMenu::new().add_item(quit);
+    let report_an_issue = CustomMenuItem::new("reportAnIssue".to_string(), "Report an Issue");
+    let system_tray_menu = SystemTrayMenu::new().add_item(report_an_issue).add_native_item(SystemTrayMenuItem::Separator).add_item(quit);
     tauri::Builder::default()
         .setup(|app| Ok(app.set_activation_policy(tauri::ActivationPolicy::Accessory)))
         .plugin(tauri_plugin_positioner::init())
@@ -45,6 +46,14 @@ fn main() {
                     println!("system tray received a double click");
                 }
                 SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+                    "reportAnIssue" => {
+                       let url = "https://github.com/keenanlk/epocher-v2/issues/new";
+
+                           match webbrowser::open(url) {
+                               Ok(_) => println!("Opened {} successfully.", url),
+                               Err(e) => println!("Failed to open {}. Error: {}", url, e),
+                           }
+                    }
                     "quit" => {
                         std::process::exit(0);
                     }
