@@ -5,19 +5,18 @@ import userEvent from "@testing-library/user-event";
 describe("App Component", () => {
   const originalDateTimeFormat = Intl.DateTimeFormat;
   beforeAll(() => {
-    Intl.DateTimeFormat = jest.fn().mockImplementation((locale, options) => {
-      if (options?.timeZone === "UTC") {
-        return new originalDateTimeFormat("en-US", {
-          ...options,
-          timeZone: "UTC",
-        }) as unknown as Intl.DateTimeFormat;
-      }
-
+    const dateTimeFormatMock = function(locale?: string | string[], options?: Intl.DateTimeFormatOptions) {
       return new originalDateTimeFormat(locale, {
         ...options,
-        timeZone: "America/Chicago",
-      }) as unknown as Intl.DateTimeFormat;
+        timeZone: options?.timeZone === 'UTC' ? 'UTC' : "America/Chicago",
+      });
+    } as unknown as typeof Intl.DateTimeFormat; // Use 'typeof Intl.DateTimeFormat' for the mock type
+
+    dateTimeFormatMock.supportedLocalesOf = jest.fn((locales: string | string[], options?: Intl.DateTimeFormatOptions) => {
+      return originalDateTimeFormat.supportedLocalesOf(locales, options);
     });
+
+    Intl.DateTimeFormat = dateTimeFormatMock;
 
     Object.defineProperty(navigator, "clipboard", {
       value: {
