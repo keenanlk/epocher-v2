@@ -6,7 +6,7 @@ describe("App Component", () => {
   const originalDateTimeFormat = Intl.DateTimeFormat;
   beforeAll(() => {
     const dateTimeFormatMock = function(locale?: string | string[], options?: Intl.DateTimeFormatOptions) {
-      return new originalDateTimeFormat(locale, {
+      return new originalDateTimeFormat('en-us' || locale, {
         ...options,
         timeZone: options?.timeZone === 'UTC' ? 'UTC' : "America/Chicago",
       });
