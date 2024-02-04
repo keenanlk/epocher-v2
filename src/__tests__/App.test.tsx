@@ -5,16 +5,19 @@ import userEvent from "@testing-library/user-event";
 describe("App Component", () => {
   const originalDateTimeFormat = Intl.DateTimeFormat;
   beforeAll(() => {
-    const dateTimeFormatMock = function(locale?: string | string[], options?: Intl.DateTimeFormatOptions) {
-      return new originalDateTimeFormat('en-us' || locale, {
+    const dateTimeFormatMock = function (
+      locale?: string | string[],
+      options?: Intl.DateTimeFormatOptions,
+    ) {
+      return new originalDateTimeFormat("en-us" || locale, {
         ...options,
-        timeZone: options?.timeZone === 'UTC' ? 'UTC' : "America/Chicago",
+        timeZone: options?.timeZone === "UTC" ? "UTC" : "America/Chicago",
       });
     } as unknown as typeof Intl.DateTimeFormat; // Use 'typeof Intl.DateTimeFormat' for the mock type
 
-    dateTimeFormatMock.supportedLocalesOf = jest.fn((locales: string | string[], options?: Intl.DateTimeFormatOptions) => {
-      return originalDateTimeFormat.supportedLocalesOf(locales, options);
-    });
+    // dateTimeFormatMock.supportedLocalesOf = jest.fn((locales: string | string[], options?: Intl.DateTimeFormatOptions) => {
+    //   return originalDateTimeFormat.supportedLocalesOf(locales, options);
+    // });
 
     Intl.DateTimeFormat = dateTimeFormatMock;
 
