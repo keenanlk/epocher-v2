@@ -25,15 +25,22 @@ function App() {
     setDate(new Date(unixTime * 1000));
   }
 
+  function isValidDate(d: unknown) {
+    return d instanceof Date && !isNaN(d.getTime());
+  }
+
   function onTimeChange(event: React.ChangeEvent<HTMLInputElement>) {
-    debugger;
     const time = event.target.value;
+
     const [hours, minutes, seconds] = time.split(":");
     const newDate = new Date(date);
     newDate.setHours(parseInt(hours));
     newDate.setMinutes(parseInt(minutes));
     newDate.setSeconds(parseInt(seconds));
-    setDate(newDate);
+
+    if (isValidDate(newDate)) {
+      setDate(newDate);
+    }
   }
 
   const [timeZone] = useState<string>(
@@ -45,7 +52,8 @@ function App() {
   }
 
   function getDateStringInUTC() {
-    return formatInTimeZone(date, "UTC", "yyyy-MM-dd hh:mm:ss a zzz");
+    const result = formatInTimeZone(date, "UTC", "yyyy-MM-dd hh:mm:ss a zzz");
+    return result;
   }
 
   function getDateISOString() {
@@ -78,6 +86,7 @@ function App() {
       <div className="grid gap-4 grid-cols-1 p-8">
         <div className="flex justify-between space-x-2">
           <TextInput
+            data-testid="unix-input"
             type="number"
             value={getUnixTimeFromDate()}
             onChange={onUnixTimeChange}
@@ -88,14 +97,19 @@ function App() {
           </Button>
         </div>
         <div>
-          <p className="text-white">{getDateStringInLocalTimeZone()}</p>
+          <p data-testid="local-time-string" className="text-white">
+            {getDateStringInLocalTimeZone()}
+          </p>
         </div>
         <div>
-          <p className="text-white">{getDateStringInUTC()}</p>
+          <p data-testid="utc-time-string" className="text-white">
+            {getDateStringInUTC()}
+          </p>
         </div>
         <div className="">
           <Tooltip content={tooltipText} placement="right">
             <p
+              data-testid="iso-time-string"
               className="text-white cursor-pointer"
               onClick={() => copyTextToClipboard(getDateISOString())}
             >
@@ -103,7 +117,7 @@ function App() {
             </p>
           </Tooltip>
         </div>
-        <div>
+        <div data-testid="date-picker">
           <Datepicker
             key={datepickerKey}
             id="datepicker"
@@ -117,6 +131,7 @@ function App() {
         </div>
         <div>
           <TextInput
+            data-testid="time-input"
             sizing="md"
             type="time"
             step="1"
