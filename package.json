@@ -13,7 +13,7 @@
     "bump-patch": " tsx bump-version.ts patch",
     "bump-minor": " tsx bump-version.ts minor",
     "bump-major": " tsx bump-version.ts major",
-    "test": "jest"
+    "test": "TZ=America/Chicago jest"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.2",
