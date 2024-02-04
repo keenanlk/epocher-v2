@@ -1,0 +1,23 @@
+name: pr-name-linter
+on:
+  pull_request:
+    types: ['opened', 'edited', 'reopened', 'synchronize']
+
+jobs:
+  lint-pr-title:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+      - run: npm install --ignore-scripts
+
+      - run: |
+          PR_TITLE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | jq -r .title)
+          echo "PR title: '$PR_TITLE'"
+          echo "$PR_TITLE" | npm run commitlint
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
