@@ -47,7 +47,7 @@ fn main() {
                 }
                 SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
                     "reportAnIssue" => {
-                       let url = "https://github.com/keenanlk/epocher-v2/issues/new";
+                       let url = "https://github.com/keenanlk/epocher-v2/issues/new?assignees=&labels=user%20reported%20bug&projects=&template=bug_report.md&title=";
 
                            match webbrowser::open(url) {
                                Ok(_) => println!("Opened {} successfully.", url),
