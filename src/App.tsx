@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { formatInTimeZone } from "date-fns-tz";
-import { Button, Datepicker, TextInput, Tooltip } from "flowbite-react";
+import {
+  Button,
+  Card,
+  Datepicker,
+  Dropdown,
+  Select,
+  TextInput,
+  Tooltip,
+} from "flowbite-react";
 import { MdRefresh } from "react-icons/md";
-
+import { useTimezone } from "./context/timezone.tsx";
 function App() {
   const [date, setDate] = useState<Date>(new Date());
   const [datepickerKey, setDatepickerKey] = useState<number>(0);
   const [tooltipText, setTooltipText] = useState("Click to copy");
+
+  const {
+    timezones,
+    timezone: selectedTimezone,
+    setSelectedTimezone,
+    setSearchFilter,
+    search,
+    searchFilter,
+  } = useTimezone();
 
   useEffect(() => {
     setDatepickerKey((prev) => prev + 1);
@@ -51,8 +68,12 @@ function App() {
     return formatInTimeZone(date, timeZone, "yyyy-MM-dd hh:mm:ss a zzz");
   }
 
-  function getDateStringInUTC() {
-    const result = formatInTimeZone(date, "UTC", "yyyy-MM-dd hh:mm:ss a zzz");
+  function getDateStringInSelectedTimezone() {
+    const result = formatInTimeZone(
+      date,
+      selectedTimezone,
+      "yyyy-MM-dd hh:mm:ss a zzz",
+    );
     return result;
   }
 
@@ -81,9 +102,13 @@ function App() {
     return unit < 10 ? `0${unit}` : `${unit}`;
   }
 
+  function testOnClick(e) {
+    debugger;
+  }
+
   return (
     <div className="w-screen h-screen bg-black bg-opacity-50">
-      <div className="grid gap-4 grid-cols-1 p-8">
+      <div className="grid gap-2 grid-cols-1 px-6 py-6 mx-2">
         <div className="flex justify-between space-x-2">
           <TextInput
             data-testid="unix-input"
@@ -97,38 +122,67 @@ function App() {
           </Button>
         </div>
         <div>
-          <p data-testid="local-time-string" className="text-white">
-            {getDateStringInLocalTimeZone()}
-          </p>
-        </div>
-        <div>
-          <p data-testid="utc-time-string" className="text-white">
-            {getDateStringInUTC()}
-          </p>
-        </div>
-        <div className="">
-          <Tooltip content={tooltipText} placement="right">
-            <p
-              data-testid="iso-time-string"
-              className="text-white cursor-pointer"
-              onClick={() => copyTextToClipboard(getDateISOString())}
-            >
-              {getDateISOString()}
+          <Card className="p-0 m-0">
+            <p data-testid="local-time-string" className="text-white text-sm">
+              {getDateStringInLocalTimeZone()}
             </p>
-          </Tooltip>
+            <Tooltip content={tooltipText} placement="right">
+              <p
+                data-testid="iso-time-string"
+                className="text-white cursor-pointer text-sm"
+                onClick={() => copyTextToClipboard(getDateISOString())}
+              >
+                {getDateISOString()}
+              </p>
+            </Tooltip>
+            <p data-testid="utc-time-string" className="text-white text-sm">
+              {getDateStringInSelectedTimezone()}
+            </p>
+            <Dropdown
+              label={selectedTimezone}
+              value={selectedTimezone}
+              onClick={testOnClick}
+            >
+              <Dropdown.Item as="div" className="focus:bg-gray-700">
+                <TextInput
+                  autoFocus
+                  type={"text"}
+                  placeholder={"Search timezones"}
+                  onClick={(e) => e.stopPropagation()}
+                  onKeyDown={(e) => e.stopPropagation()}
+                  onChange={(e) => search(e.target.value)}
+                  onMouseLeave={(e) => e.stopPropagation()}
+                />
+              </Dropdown.Item>
+              <div className="max-h-[300px] overflow-y-scroll">
+                {timezones.map((tz) => (
+                  <Dropdown.Item
+                    key={tz}
+                    value={tz}
+                    onClick={() => setSelectedTimezone(tz)}
+                    className={
+                      tz === selectedTimezone ? "bg-gray-800 font-bold" : ""
+                    }
+                  >
+                    <p className="text-sm">{tz}</p>
+                  </Dropdown.Item>
+                ))}
+              </div>
+            </Dropdown>
+          </Card>
+          <div data-testid="date-picker">
+            <Datepicker
+              key={datepickerKey}
+              id="datepicker"
+              showClearButton={false}
+              showTodayButton={false}
+              onSelectedDateChanged={calendarDayChange}
+              defaultDate={date}
+              inline
+            />
+          </div>
         </div>
-        <div data-testid="date-picker">
-          <Datepicker
-            key={datepickerKey}
-            id="datepicker"
-            className="w-full"
-            showClearButton={false}
-            showTodayButton={false}
-            onSelectedDateChanged={calendarDayChange}
-            defaultDate={date}
-            inline
-          />
-        </div>
+
         <div>
           <TextInput
             data-testid="time-input"
