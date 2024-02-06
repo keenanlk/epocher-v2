@@ -5,11 +5,17 @@ use webbrowser;
 use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem};
 use tauri_plugin_positioner::{Position, WindowExt};
 
+#[tauri::command]
+fn quit_app() {
+  std::process::exit(0);
+}
+
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
     let report_an_issue = CustomMenuItem::new("reportAnIssue".to_string(), "Report an Issue");
     let system_tray_menu = SystemTrayMenu::new().add_item(report_an_issue).add_native_item(SystemTrayMenuItem::Separator).add_item(quit);
     tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![quit_app])
         .setup(|app| Ok(app.set_activation_policy(tauri::ActivationPolicy::Accessory)))
         .plugin(tauri_plugin_positioner::init())
         .system_tray(SystemTray::new().with_menu(system_tray_menu))

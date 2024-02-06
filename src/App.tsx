@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { formatInTimeZone } from "date-fns-tz";
 import { Button, Datepicker, TextInput, Tooltip } from "flowbite-react";
 import { MdRefresh } from "react-icons/md";
+import { invoke } from "@tauri-apps/api/tauri";
 
 function App() {
   const [date, setDate] = useState<Date>(new Date());
@@ -83,6 +84,13 @@ function App() {
 
   return (
     <div className="w-screen h-screen bg-black bg-opacity-50">
+      <button
+        className="absolute top-0 right-0 p-2 text-gray-300  rounded-full hover:text-white"
+        onClick={() => invoke("quit_app")}
+        data-tooltip="Quit"
+      >
+        x
+      </button>
       <div className="grid gap-4 grid-cols-1 p-8">
         <div className="flex justify-between space-x-2">
           <TextInput
