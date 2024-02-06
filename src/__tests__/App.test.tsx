@@ -51,10 +51,10 @@ describe("App Component", () => {
     });
 
     expect(screen.getByTestId("local-time-string")).toHaveTextContent(
-      "2024-02-03 06:17:14 PM CST",
+      "02/03/2024 06:17:14 PM CST",
     );
     expect(screen.getByTestId("utc-time-string")).toHaveTextContent(
-      "2024-02-04 12:17:14 AM UTC",
+      "02/04/2024 12:17:14 AM UTC",
     );
     expect(screen.getByTestId("iso-time-string")).toHaveTextContent(
       "2024-02-04T00:17:14.000Z",
@@ -97,13 +97,56 @@ describe("App Component", () => {
 
     await waitFor(() => {
       expect(screen.getByTestId("local-time-string")).toHaveTextContent(
-        "2024-02-03 12:00:00 PM CST",
+        "02/03/2024 12:00:00 PM CST",
       );
       expect(screen.getByTestId("utc-time-string")).toHaveTextContent(
-        "2024-02-03 06:00:00 PM UTC",
+        "02/03/2024 06:00:00 PM UTC",
       );
       expect(screen.getByTestId("iso-time-string")).toHaveTextContent(
         "2024-02-03T18:00:00.000Z",
+      );
+    });
+  });
+
+  test("date updaes when date input is changed", async () => {
+    render(<App />);
+    const unixTime = 1707005834;
+
+    fireEvent.change(screen.getByTestId("unix-input"), {
+      target: { value: String(unixTime) },
+    });
+
+    const dateInput = screen.getByTestId("date-input");
+
+    fireEvent.change(dateInput, { target: { value: "2024-02-04" } });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("local-time-string")).toHaveTextContent(
+        "02/04/2024 06:17:14 PM CST",
+      );
+      expect(screen.getByTestId("utc-time-string")).toHaveTextContent(
+        "02/05/2024 12:17:14 AM UTC",
+      );
+      expect(screen.getByTestId("iso-time-string")).toHaveTextContent(
+        "2024-02-05T00:17:14.000Z",
+      );
+    });
+  });
+
+  test("date updates to current date when refresh clicked", async () => {
+    render(<App />);
+    const unixTime = 1707005834;
+
+    fireEvent.change(screen.getByTestId("unix-input"), {
+      target: { value: String(unixTime) },
+    });
+
+    const refreshButton = screen.getByTestId("refresh-button");
+    fireEvent.click(refreshButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("unix-input")).toHaveValue(
+        Math.floor(Date.now() / 1000),
       );
     });
   });

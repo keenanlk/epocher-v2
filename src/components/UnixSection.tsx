@@ -53,7 +53,11 @@ export default function UnixSection({
         autoFocus
         ref={unixRef}
       />
-      <Button className="flex-shrink-0" onClick={refreshDate}>
+      <Button
+        className="flex-shrink-0"
+        onClick={refreshDate}
+        data-testid="refresh-button"
+      >
         <MdRefresh />
       </Button>
     </div>
