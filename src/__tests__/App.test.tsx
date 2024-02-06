@@ -150,4 +150,25 @@ describe("App Component", () => {
       );
     });
   });
+
+  test("unix input is focused when date refreshed", async () => {
+    render(<App />);
+    const unixTime = 1707005834;
+
+    fireEvent.change(screen.getByTestId("unix-input"), {
+      target: { value: String(unixTime) },
+    });
+
+    const refreshButton = screen.getByTestId("refresh-button");
+    fireEvent.click(refreshButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("unix-input")).toHaveFocus();
+    });
+  });
+
+  test("unix input has focus on initial render", () => {
+    render(<App />);
+    expect(screen.getByTestId("unix-input")).toHaveFocus();
+  });
 });
