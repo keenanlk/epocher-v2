@@ -22,7 +22,7 @@ export default function UnixSection({
 
   function onUnixTimeChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
-    const unixTime = parseInt(value);
+    const unixTime = parseInt(value.slice(0, 10));
     if (isNaN(unixTime)) {
       return;
     }
