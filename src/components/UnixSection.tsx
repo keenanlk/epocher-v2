@@ -1,5 +1,4 @@
 import { Button, TextInput } from "flowbite-react";
-import { MdRefresh } from "react-icons/md";
 import React, { useEffect, useRef } from "react";
 
 type UnixSectionProps = {
@@ -58,7 +57,7 @@ export default function UnixSection({
         onClick={refreshDate}
         data-testid="refresh-button"
       >
-        <MdRefresh />
+        <span className="material-icons text-sm">refresh</span>
       </Button>
     </div>
   );
