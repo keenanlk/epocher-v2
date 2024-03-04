@@ -10,6 +10,11 @@ This utility is designed for the Mac menu bar, offering an efficient way to conv
 - Refresh Functionality: Quickly reset to the current date and time at the click of a button.
 
 ### Installation
+
+[![image](https://github.com/keenanlk/epocher-v2/assets/25515073/6251104e-fe88-48ba-993a-4eca204c6b8c)](https://apps.apple.com/us/app/epocher/id6477356412?mt=12)
+
+#### OR
+
 To install the application:
 
 1. Go to the [GitHub Releases page](https://github.com/keenanlk/epocher-v2/releases/latest) and download the latest version.
