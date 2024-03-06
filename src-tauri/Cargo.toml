@@ -17,7 +17,7 @@ tauri = { version = "1.5", features = [ "updater", "macos-private-api", "system-
 tauri-plugin-positioner = { version = "1.0.4", features = ["system-tray"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-webbrowser = "0.8.12"
+webbrowser = "0.8.13"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
